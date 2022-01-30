@@ -20,8 +20,7 @@ jobs:
       run: |
         mkdir -p /project/workdir
         cd /project
-        wget --no-check-certificate https://github.com/rhynec/Movian-Hybrid/archive/926477d8f03d842c688f95f7afa9f44d0e8ae151.tar.gz -O movian.tar.gz
-        mkdir movian && cd movian && tar --strip-components=1 -xzf ../movian.tar.gz
+        git clone https://github.com/rhynec/movian.git && cd movian
         bash ./Autobuild.sh -t ps3 -j 9 -w /project/workdir -v 5.1.000
     - name: Upload SDK
       uses: actions/upload-artifact@v2
