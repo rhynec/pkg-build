@@ -1,0 +1,177 @@
+name: Build Release
+
+on: 
+  push:
+
+jobs:
+
+  build-movian:
+    runs-on: ubuntu-20.04
+    container:
+      image: ubuntu:xenial
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build requirements
+      run: ./.github/scripts/req.sh
+    - name: Build release
+      run: |
+        mkdir -p /project/workdir
+        cd /project
+        wget --no-check-certificate https://github.com/rhynec/Movian-Hybrid/archive/926477d8f03d842c688f95f7afa9f44d0e8ae151.tar.gz -O movian.tar.gz
+        mkdir movian && cd movian && tar --strip-components=1 -xzf ../movian.tar.gz
+        bash ./Autobuild.sh -t ps3 -j 9 -w /project/workdir -v 5.1.000
+    - name: Upload SDK
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: /project/movian/build.ps3/movian.pkg
+
+  build-mgz:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:bullseye
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build requirements
+      run: |
+        ./.github/scripts/req.sh
+        mkdir build && cd build
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/psdk3-linux-bullseye.tar.gz -O psdk.tar.gz
+        tar -C /usr/local/ -xzf psdk.tar.gz 
+    - name: Get source
+      run: |
+        cd build
+        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/244a0ea8be839e063adfd5609e7696b8c21e0617.tar.gz -O mgz.tar.gz
+        mkdir mgz && tar --strip-components=1 --directory=mgz -xzf mgz.tar.gz
+    - name: Build mgz
+      run: |
+        . ./.github/scripts/psdk.sh
+        cd build/mgz && make pkg
+        mv ManaGunZ.pkg mgz.pkg
+    - name: Upload package
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: ./build/mgz/mgz.pkg
+
+  build-apollo:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:bullseye
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build requirements
+      run: |
+        ./.github/scripts/req.sh
+        mkdir build && cd build
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        tar -C /usr/local/ -xzf ps3dev.tar.gz  
+    - name: Get source
+      run: |
+        cd build
+        wget --no-check-certificate https://github.com/rhynec/apollo-ps3/archive/d8c4fef9f9d6a26e2fd13f9ea84a05614c032026.tar.gz -O apollo.tar.gz
+        mkdir apollo && tar --strip-components=1 --directory=apollo -xzf apollo.tar.gz
+    - name: Build apollo
+      run: |
+        . ./.github/scripts/psdev.sh
+        cd build/apollo && make pkg
+    - name: Upload package
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: ./build/apollo/apollo.pkg
+
+  build-pkgi:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:bullseye
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build requirements
+      run: |
+        ./.github/scripts/req.sh
+        mkdir build && cd build
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        tar -C /usr/local/ -xzf ps3dev.tar.gz  
+    - name: Get source
+      run: |
+        cd build
+        wget --no-check-certificate https://github.com/rhynec/pkgi-ps3/archive/2894bc00150c2d2af90f82a0da8a6101eaf08dc8.tar.gz -O pkgi.tar.gz
+        mkdir pkgi && tar --strip-components=1 --directory=pkgi -xzf pkgi.tar.gz
+    - name: Build pkgi
+      run: |
+        . ./.github/scripts/psdev.sh
+        cd build/pkgi && make pkg
+    - name: Upload package
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: ./build/pkgi/pkgi.pkg
+
+  build-ats:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:bullseye
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build requirements
+      run: |
+        ./.github/scripts/req.sh
+        mkdir build && cd build
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        tar -C /usr/local/ -xzf ps3dev.tar.gz  
+    - name: Get source
+      run: |
+        cd build
+        wget --no-check-certificate https://github.com/rhynec/ats-ps3/archive/578d4cbf052990171d234c7d9f6ef836765de47f.tar.gz -O ats.tar.gz
+        mkdir ats && tar --strip-components=1 --directory=ats -xzf ats.tar.gz
+    - name: Build ATS
+      run: |
+        . ./.github/scripts/psdev.sh
+        cd build/ats && make pkg
+    - name: Upload packages
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: ./build/ats/ats.pkg
+
+  generate-release:
+    needs: [build-movian, build-mgz, build-apollo, build-pkgi, build-ats]
+    runs-on: ubuntu-20.04
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - name: Download all assets
+      uses: actions/download-artifact@v2
+      with:
+        name: release-artifact
+    - name: Get current date
+      id: date
+      run: |
+        echo "::set-output name=date::$(date +'%Y.%m.%d')"
+        echo "::set-output name=time::$(date +'%H%M%S')"
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: "PS3 Packages (${{steps.date.outputs.date}})"
+        body: "- Packaged builds of various (tweaked) PS3 homebrew."
+        tag_name: "refs/tags/${{steps.date.outputs.date}}_${{steps.date.outputs.time}}"
+        files: ./*.pkg
+        prerelease: false
+
