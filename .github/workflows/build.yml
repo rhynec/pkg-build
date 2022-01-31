@@ -41,12 +41,12 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/psdk3-linux-bullseye.tar.gz -O psdk.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/psdk3-linux-bullseye.tar.gz -O psdk.tar.gz
         tar -C /usr/local/ -xzf psdk.tar.gz 
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/244a0ea8be839e063adfd5609e7696b8c21e0617.tar.gz -O mgz.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/11c12c67079b3fa49ea476dc42e24e1cb30d0fb4.tar.gz -O mgz.tar.gz
         mkdir mgz && tar --strip-components=1 --directory=mgz -xzf mgz.tar.gz
     - name: Build mgz
       run: |
@@ -72,7 +72,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
         tar -C /usr/local/ -xzf ps3dev.tar.gz  
     - name: Get source
       run: |
@@ -102,7 +102,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
         tar -C /usr/local/ -xzf ps3dev.tar.gz  
     - name: Get source
       run: |
@@ -132,7 +132,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.29_051503/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
         tar -C /usr/local/ -xzf ps3dev.tar.gz  
     - name: Get source
       run: |
