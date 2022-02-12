@@ -21,6 +21,7 @@ jobs:
         mkdir -p /project/workdir
         cd /project
         git clone https://github.com/rhynec/movian.git && cd movian
+        git checkout fb8bd7b452323c14b3c8710df73a3e6b78b685da
         bash ./Autobuild.sh -t ps3 -j 9 -w /project/workdir -v 5.1.000
     - name: Upload SDK
       uses: actions/upload-artifact@v2
@@ -46,7 +47,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/11c12c67079b3fa49ea476dc42e24e1cb30d0fb4.tar.gz -O mgz.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/9b46d82023ce05701def82534a3f687e917d36ce.tar.gz -O mgz.tar.gz
         mkdir mgz && tar --strip-components=1 --directory=mgz -xzf mgz.tar.gz
     - name: Build mgz
       run: |
@@ -77,7 +78,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/apollo-ps3/archive/d8c4fef9f9d6a26e2fd13f9ea84a05614c032026.tar.gz -O apollo.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/apollo-ps3/archive/49a99bcdedff12a6f12f463cc311303041f8feef.tar.gz -O apollo.tar.gz
         mkdir apollo && tar --strip-components=1 --directory=apollo -xzf apollo.tar.gz
     - name: Build apollo
       run: |
@@ -137,7 +138,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/ats-ps3/archive/578d4cbf052990171d234c7d9f6ef836765de47f.tar.gz -O ats.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/ats-ps3/archive/4e0d4dd24fde9c2cbf557769b7adea439a0856f0.tar.gz -O ats.tar.gz
         mkdir ats && tar --strip-components=1 --directory=ats -xzf ats.tar.gz
     - name: Build ATS
       run: |
