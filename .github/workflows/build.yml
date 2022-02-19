@@ -42,7 +42,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/psdk3-linux-bullseye.tar.gz -O psdk.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.02.18_200329/psdk3-linux-bullseye.tar.gz -O psdk.tar.gz
         tar -C /usr/local/ -xzf psdk.tar.gz 
     - name: Get source
       run: |
@@ -73,7 +73,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.02.18_200329/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
         tar -C /usr/local/ -xzf ps3dev.tar.gz  
     - name: Get source
       run: |
@@ -90,6 +90,36 @@ jobs:
         name: release-artifact
         path: ./build/apollo/apollo.pkg
 
+  build-artemis:
+    runs-on: ubuntu-20.04
+    container:
+      image: debian:bullseye
+    defaults:
+        run:
+          shell: bash
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install build requirements
+      run: |
+        ./.github/scripts/req.sh
+        mkdir build && cd build
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.02.18_200329/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        tar -C /usr/local/ -xzf ps3dev.tar.gz  
+    - name: Get source
+      run: |
+        cd build
+        wget --no-check-certificate https://github.com/rhynec/ArtemisPS3/archive/d6fc1184cbb517dc28f38f988da66949bf74f8d0.tar.gz -O artemis.tar.gz
+        mkdir artemis && tar --strip-components=1 --directory=artemis -xzf artemis.tar.gz
+    - name: Build artemis
+      run: |
+        . ./.github/scripts/psdev.sh
+        cd build/artemis && make pkg
+    - name: Upload package
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-artifact
+        path: ./build/artemis/artemis.pkg
+
   build-pkgi:
     runs-on: ubuntu-20.04
     container:
@@ -103,7 +133,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.02.18_200329/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
         tar -C /usr/local/ -xzf ps3dev.tar.gz  
     - name: Get source
       run: |
@@ -133,7 +163,7 @@ jobs:
       run: |
         ./.github/scripts/req.sh
         mkdir build && cd build
-        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.01.31_002723/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
+        wget --no-check-certificate https://github.com/PS3SDK-Misc/SDK-Build/releases/download/2022.02.18_200329/ps3dev-latest-bullseye.tar.gz -O ps3dev.tar.gz
         tar -C /usr/local/ -xzf ps3dev.tar.gz  
     - name: Get source
       run: |
@@ -151,7 +181,7 @@ jobs:
         path: ./build/ats/ats.pkg
 
   generate-release:
-    needs: [build-movian, build-mgz, build-apollo, build-pkgi, build-ats]
+    needs: [build-movian, build-mgz, build-apollo, build-artemis, build-pkgi, build-ats]
     runs-on: ubuntu-20.04
     defaults:
         run:
