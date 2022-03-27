@@ -21,7 +21,7 @@ jobs:
         mkdir -p /project/workdir
         cd /project
         git clone https://github.com/rhynec/movian.git && cd movian
-        git checkout 4144952724b69cfb4a5b99ff9585fae375cd6bb9
+        git checkout 17afa4d8d3c3ee48c5c211472ee34d34db648830
         bash ./Autobuild.sh -t ps3 -j 9 -w /project/workdir -v 5.1.000
     - name: Upload package
       uses: actions/upload-artifact@v2
