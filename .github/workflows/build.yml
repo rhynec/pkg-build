@@ -21,9 +21,9 @@ jobs:
         mkdir -p /project/workdir
         cd /project
         git clone https://github.com/rhynec/movian.git && cd movian
-        git checkout f80e79bc141c48f54b972f240185344ecef72f33
+        git checkout 4144952724b69cfb4a5b99ff9585fae375cd6bb9
         bash ./Autobuild.sh -t ps3 -j 9 -w /project/workdir -v 5.1.000
-    - name: Upload SDK
+    - name: Upload package
       uses: actions/upload-artifact@v2
       with:
         name: release-artifact
@@ -47,7 +47,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/985d6c0c7c9f472fd8c877240fc0f5177ed56a01.tar.gz -O mgz.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/ManaGunZ/archive/42dedc30079c49c86dc31cb9146de6a28b513ec3.tar.gz -O mgz.tar.gz
         mkdir mgz && tar --strip-components=1 --directory=mgz -xzf mgz.tar.gz
     - name: Build mgz
       run: |
@@ -78,7 +78,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/apollo-ps3/archive/3fa74ea15c01acd2715f311254c0119c02c9b31a.tar.gz -O apollo.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/apollo-ps3/archive/401293195d9236363f54469d9faad99a47ea682f.tar.gz -O apollo.tar.gz
         mkdir apollo && tar --strip-components=1 --directory=apollo -xzf apollo.tar.gz
     - name: Build apollo
       run: |
@@ -108,7 +108,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/ArtemisPS3/archive/9cd039f3a7d870bf0f5305c78256cfe145a9b499.tar.gz -O artemis.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/ArtemisPS3/archive/2fb7a4eda5bc22971410712dfa3716605e5f23ab.tar.gz -O artemis.tar.gz
         mkdir artemis && tar --strip-components=1 --directory=artemis -xzf artemis.tar.gz
     - name: Build artemis
       run: |
@@ -138,7 +138,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/pkgi-ps3/archive/d343682b157ae3252dffb50a70f0f0392949b88e.tar.gz -O pkgi.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/pkgi-ps3/archive/9082f2d38e459b7729616fd1ee3df74f4ec66ccb.tar.gz -O pkgi.tar.gz
         mkdir pkgi && tar --strip-components=1 --directory=pkgi -xzf pkgi.tar.gz
     - name: Build pkgi
       run: |
@@ -168,7 +168,7 @@ jobs:
     - name: Get source
       run: |
         cd build
-        wget --no-check-certificate https://github.com/rhynec/ats-ps3/archive/2b24e15effa077e9e8bc73ac6726317b0701a7b6.tar.gz -O ps3-ats.tar.gz
+        wget --no-check-certificate https://github.com/rhynec/ats-ps3/archive/d6be6367e2e70cb49722e0ac6f67c79c12e31078.tar.gz -O ps3-ats.tar.gz
         mkdir ps3-ats && tar --strip-components=1 --directory=ps3-ats -xzf ps3-ats.tar.gz
     - name: Build ATS
       run: |
